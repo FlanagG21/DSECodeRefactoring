@@ -1,6 +1,5 @@
 # bad_script.py
 import numbers
-import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import random
@@ -60,7 +59,7 @@ def standardDev(data, column):
         print("column is not a feature in data")
         raise IndexError
     if isinstance(data[column], numbers.Number):
-        print("the values in column are not numerical")
+        print("the values in" + column + "are not numerical")
         raise TypeError
     stdev = data[column].std()
     print("std dev is", stdev)
@@ -74,7 +73,7 @@ def print5Random(data):
     """
     print("sample rows:")
     if data is None or data.empty:
-        return None
+        raise ValueError("DataFrame is empty. Expected non-empty input.")
     for i in range(5):
         r = random.randint(0, len(data)-1)
         print(data.iloc[r])
@@ -86,6 +85,13 @@ def plotVals(data, value):
         data (dataframe): the dataframe with the data
         value (string): the name of a column in data
     """
+    if data is None or data.empty:
+        raise ValueError("DataFrame is empty. Expected non-empty input.")
+    if not value in data.columns:
+        print("column is not a feature in data")
+        raise IndexError
     plt.plot(data[value])
     plt.title("Values")
     plt.show()
+    plt.savefig('./chart.png', dpi=300, bbox_inches='tight')
+    plt.close()  
